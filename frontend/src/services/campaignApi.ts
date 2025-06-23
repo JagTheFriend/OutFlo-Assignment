@@ -5,7 +5,7 @@ export interface ApiCampaign {
   id?: string;
   name: string;
   description: string;
-  status: "active" | "inactive" | "deleted";
+  status: "ACTIVE" | "INACTIVE" | "DELETED";
   leads?: string[];
   accountIDs?: string[];
   createdAt?: string;
@@ -42,7 +42,7 @@ export class CampaignApiService {
     const apiPayload: Omit<ApiCampaign, "id" | "createdAt" | "updatedAt"> = {
       name: campaignData.name,
       description: campaignData.description,
-      status: campaignData.status.toLowerCase() as "active" | "inactive",
+      status: campaignData.status.toUpperCase() as "ACTIVE" | "INACTIVE",
       leads: [],
       accountIDs: [],
     };
@@ -70,7 +70,7 @@ export class CampaignApiService {
     const apiPayload: Omit<ApiCampaign, "id" | "createdAt" | "updatedAt"> = {
       name: campaignData.name,
       description: campaignData.description,
-      status: campaignData.status.toLowerCase() as "active" | "inactive",
+      status: campaignData.status.toUpperCase() as "ACTIVE" | "INACTIVE",
       leads: [],
       accountIDs: [],
     };
