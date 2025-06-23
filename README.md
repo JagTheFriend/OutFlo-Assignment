@@ -11,13 +11,32 @@ Additionally, it includes a campaign management system that allows you to create
 - Node.js
 - PostgreSQL
 
-### Get Started
+## Get Started
+
+### Frontend
+
+1. Install dependencies
+
+```bash
+cd frontend
+npm install
+```
+
+2. Start the client
+
+```bash
+npm run dev
+```
+
+````
+
+### Backend
 
 1. Install dependencies
 
 ```bash
 npm install
-```
+````
 
 2. Add env file
 

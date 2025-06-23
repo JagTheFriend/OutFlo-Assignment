@@ -2,7 +2,9 @@
   "name": "outflow-fullstack",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev:server": "tsx watch src/index.ts",
+    "dev:client": "cd frontend && npm run dev",
+    "prod": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build": "tsc",
     "start": "node dist/index.js",
     "postinstall": "prisma generate",
@@ -15,6 +17,7 @@
     "@hono/node-server": "^1.14.4",
     "@hono/zod-validator": "^0.7.0",
     "@prisma/client": "6.10.1",
+    "concurrently": "^9.2.0",
     "hono": "^4.8.2",
     "openai": "^5.6.0",
     "zod": "^3.25.67"
