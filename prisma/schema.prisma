@@ -8,13 +8,18 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum CampaignStatus {
+    ACTIVE
+    INACTIVE
+    DELETED
+}
+
 model Campaign {
     id String @id @default(uuid())
 
     name        String
     description String
-    // i.e ACTIVE | DELETED etc
-    status      String
+    status      CampaignStatus
 
     leads      String[]
     accountIDs String[]

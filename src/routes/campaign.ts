@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db } from "../lib/db.js";
+import { CampaignStatus } from "../lib/generated/prisma-client/index.js";
 import { zValidator } from "../lib/validator.js";
 
 export const campaignRoute = new Hono();
@@ -64,10 +65,7 @@ campaignRoute.post("/", zValidator("json", newCampaignSchema), async (c) => {
 const updateCampaignSchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
-  status: z
-    .string()
-    .transform((status) => status.toUpperCase())
-    .optional(),
+  status: z.nativeEnum(CampaignStatus).optional(),
 });
 
 // PUT /campaigns/:id Update campaign details (including status)
