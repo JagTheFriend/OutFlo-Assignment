@@ -16,6 +16,7 @@ export class CampaignApiService {
   private baseUrl = API_CONFIG.BASE_URL;
 
   async getAllCampaigns(): Promise<Campaign[]> {
+    console.log(this.baseUrl);
     const response = await fetch(`${this.baseUrl}/campaigns`);
 
     if (!response.ok) {
