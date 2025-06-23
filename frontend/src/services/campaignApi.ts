@@ -17,25 +17,25 @@ export class CampaignApiService {
 
   async getAllCampaigns(): Promise<Campaign[]> {
     console.log(this.baseUrl);
-    const response = await fetch(`${this.baseUrl}/campaigns`);
+    const response = await fetch(`${this.baseUrl}/campaign`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch campaigns: ${response.status}`);
     }
 
-    const apiCampaigns: ApiCampaign[] = await response.json();
-    return apiCampaigns.map(this.transformApiCampaign);
+    const apiCampaigns: { data: ApiCampaign[] } = await response.json();
+    return apiCampaigns.data.map(this.transformApiCampaign);
   }
 
   async getCampaignById(id: string): Promise<Campaign> {
-    const response = await fetch(`${this.baseUrl}/campaigns/${id}`);
+    const response = await fetch(`${this.baseUrl}/campaign/${id}`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch campaign: ${response.status}`);
     }
 
-    const apiCampaign: ApiCampaign = await response.json();
-    return this.transformApiCampaign(apiCampaign);
+    const apiCampaign: { data: ApiCampaign } = await response.json();
+    return this.transformApiCampaign(apiCampaign.data);
   }
 
   async createCampaign(campaignData: CreateCampaignRequest): Promise<Campaign> {
@@ -47,7 +47,7 @@ export class CampaignApiService {
       accountIDs: [],
     };
 
-    const response = await fetch(`${this.baseUrl}/campaigns`, {
+    const response = await fetch(`${this.baseUrl}/campaign`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,8 +59,8 @@ export class CampaignApiService {
       throw new Error(`Failed to create campaign: ${response.status}`);
     }
 
-    const createdCampaign: ApiCampaign = await response.json();
-    return this.transformApiCampaign(createdCampaign);
+    const createdCampaign: { data: ApiCampaign } = await response.json();
+    return this.transformApiCampaign(createdCampaign.data);
   }
 
   async updateCampaign(
@@ -75,7 +75,7 @@ export class CampaignApiService {
       accountIDs: [],
     };
 
-    const response = await fetch(`${this.baseUrl}/campaigns/${id}`, {
+    const response = await fetch(`${this.baseUrl}/campaign/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -87,12 +87,12 @@ export class CampaignApiService {
       throw new Error(`Failed to update campaign: ${response.status}`);
     }
 
-    const updatedCampaign: ApiCampaign = await response.json();
-    return this.transformApiCampaign(updatedCampaign);
+    const updatedCampaign: { data: ApiCampaign } = await response.json();
+    return this.transformApiCampaign(updatedCampaign.data);
   }
 
   async deleteCampaign(id: string): Promise<void> {
-    const response = await fetch(`${this.baseUrl}/campaigns/${id}`, {
+    const response = await fetch(`${this.baseUrl}/campaign/${id}`, {
       method: "DELETE",
     });
 
