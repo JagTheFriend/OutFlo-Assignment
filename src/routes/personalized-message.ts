@@ -30,12 +30,11 @@ personalizedMessage.post(
       messages: [
         {
           role: "user",
-          content: `Assume that you work as a recruiter on behalf of a company. Create a personalized LinkedIn message for ${name}, who is a ${job_title} at ${company}. The message should be written in a professional tone and include their location (${location}) and a brief summary of their work experience (${summary}). Don't include reasoning, only include the message.`,
+          content: `Assume that you work as a recruiter working for Outflow trying to connect with others on behalf of a company. Create a personalized LinkedIn message for ${name}, who is a ${job_title} at ${company}. The message should be written in a professional tone and include their location (${location}) and a brief summary of their work experience (${summary}). Don't include reasoning, only include the message. Example Output: "Hey John, I see you are working as a Software Engineer at TechCorp. Outflo
+can help automate your outreach to increase meetings & sales. Let's connect!.". Keep it short and concise.`,
         },
       ],
     });
-
-    console.log(completion.choices[0]);
 
     return c.json(
       {
