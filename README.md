@@ -1,8 +1,43 @@
-```
+# OutFlo
+
+This is a full stack application that uses the OpenRouter API to generate personalized LinkedIn messages for recruiters.
+
+Additionally, it includes a campaign management system that allows you to create, update, and delete campaigns.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- PostgreSQL
+
+### Get Started
+
+1. Install dependencies
+
+```bash
 npm install
+```
+
+2. Add env file
+
+```bash
+DATABASE_URL=postgres://...
+NODE_ENV=development
+PORT=3000
+OPENROUTER_API_KEY=...
+```
+
+3. Push schema to the database
+
+```bash
+npm run db:push
+```
+
+4. Start the server
+
+```bash
 npm run dev
 ```
 
-```
-open http://localhost:3000
-```
+Open [http://localhost:3000](http://localhost:3000)
