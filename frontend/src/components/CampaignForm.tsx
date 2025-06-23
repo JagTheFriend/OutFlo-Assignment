@@ -1,7 +1,6 @@
-
-import React, { useState, useEffect } from 'react';
-import { Campaign, CreateCampaignRequest } from '../types/campaign';
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Campaign, CreateCampaignRequest } from "../types/campaign";
 
 interface CampaignFormProps {
   campaign?: Campaign;
@@ -17,9 +16,11 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
   isOpen,
 }) => {
   const [formData, setFormData] = useState<CreateCampaignRequest>({
-    name: '',
-    description: '',
-    status: 'INACTIVE',
+    name: "",
+    description: "",
+    status: "INACTIVE",
+    leads: [],
+    accountIDs: [],
   });
 
   useEffect(() => {
@@ -28,12 +29,18 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
         name: campaign.name,
         description: campaign.description,
         status: campaign.status,
+        leads: campaign.leads.map((leadId) => leadId.toString()),
+        accountIDs: campaign.accountIDs.map((accountId) =>
+          accountId.toString()
+        ),
       });
     } else {
       setFormData({
-        name: '',
-        description: '',
-        status: 'INACTIVE',
+        name: "",
+        description: "",
+        status: "INACTIVE",
+        leads: [],
+        accountIDs: [],
       });
     }
   }, [campaign]);
@@ -50,7 +57,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
         <div className="flex items-center justify-between p-6 border-b">
           <h3 className="text-lg font-semibold">
-            {campaign ? 'Edit Campaign' : 'Create New Campaign'}
+            {campaign ? "Edit Campaign" : "Create New Campaign"}
           </h3>
           <button
             onClick={onCancel}
@@ -67,7 +74,9 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               required
             />
@@ -78,7 +87,9 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
             </label>
             <textarea
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               required
@@ -93,7 +104,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  status: e.target.value as 'ACTIVE' | 'INACTIVE',
+                  status: e.target.value as "ACTIVE" | "INACTIVE",
                 })
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
@@ -114,7 +125,7 @@ const CampaignForm: React.FC<CampaignFormProps> = ({
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
             >
-              {campaign ? 'Update' : 'Create'}
+              {campaign ? "Update" : "Create"}
             </button>
           </div>
         </form>
