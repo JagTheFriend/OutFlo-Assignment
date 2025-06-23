@@ -20,6 +20,9 @@ importers:
       hono:
         specifier: ^4.8.2
         version: 4.8.2
+      openai:
+        specifier: ^5.6.0
+        version: 5.6.0(zod@3.25.67)
       zod:
         specifier: ^3.25.67
         version: 3.25.67
@@ -255,6 +258,18 @@ packages:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
 
+  openai@5.6.0:
+    resolution: {integrity: sha512-jNH5z+hYAdOMZXyEt0yZ7246s+UZjg2AwFQqkAhZIPPjxNtHHO5mykOefau6FkOqj16aC94MOdJl/rZBcKj/cQ==}
+    hasBin: true
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
+
   prisma@6.10.1:
     resolution: {integrity: sha512-khhlC/G49E4+uyA3T3H5PRBut486HD2bDqE2+rvkU0pwk9IAqGFacLFUyIx9Uw+W2eCtf6XGwsp+/strUwMNPw==}
     engines: {node: '>=18.18'}
@@ -442,6 +457,10 @@ snapshots:
   hono@4.8.2: {}
 
   jiti@2.4.2: {}
+
+  openai@5.6.0(zod@3.25.67):
+    optionalDependencies:
+      zod: 3.25.67
 
   prisma@6.10.1(typescript@5.8.3):
     dependencies:
