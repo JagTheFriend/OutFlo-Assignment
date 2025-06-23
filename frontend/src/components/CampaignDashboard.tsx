@@ -1,77 +1,49 @@
+
 import React, { useState } from 'react';
 import { Campaign, CreateCampaignRequest } from '../types/campaign';
 import CampaignCard from './CampaignCard';
 import CampaignForm from './CampaignForm';
-import { Plus, Target } from 'lucide-react';
+import { Plus, Target, RefreshCw } from 'lucide-react';
+import { useCampaigns } from '../hooks/useCampaigns';
 
 const CampaignDashboard: React.FC = () => {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([
-    {
-      id: '1',
-      name: 'Q4 Lead Generation',
-      description: 'Targeted outreach for enterprise clients in the tech sector',
-      status: 'ACTIVE',
-      createdAt: '2024-01-15T10:00:00Z',
-      updatedAt: '2024-01-15T10:00:00Z',
-    },
-    {
-      id: '2',
-      name: 'Product Launch Outreach',
-      description: 'Introducing our new SaaS platform to potential customers',
-      status: 'INACTIVE',
-      createdAt: '2024-01-10T14:30:00Z',
-      updatedAt: '2024-01-10T14:30:00Z',
-    },
-    {
-      id: '3',
-      name: 'Partnership Development',
-      description: 'Building strategic partnerships with industry leaders',
-      status: 'ACTIVE',
-      createdAt: '2024-01-05T09:15:00Z',
-      updatedAt: '2024-01-05T09:15:00Z',
-    },
-  ]);
+  const {
+    campaigns,
+    isLoading,
+    error,
+    fetchCampaigns,
+    createCampaign,
+    updateCampaign,
+    deleteCampaign,
+    toggleCampaignStatus
+  } = useCampaigns();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | undefined>();
 
-  const handleCreateCampaign = (data: CreateCampaignRequest) => {
-    const newCampaign: Campaign = {
-      id: Date.now().toString(),
-      ...data,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setCampaigns([newCampaign, ...campaigns]);
-    setIsFormOpen(false);
-  };
-
-  const handleEditCampaign = (data: CreateCampaignRequest) => {
-    if (editingCampaign) {
-      setCampaigns(
-        campaigns.map((campaign) =>
-          campaign.id === editingCampaign.id
-            ? { ...campaign, ...data, updatedAt: new Date().toISOString() }
-            : campaign
-        )
-      );
-      setEditingCampaign(undefined);
+  const handleCreateCampaign = async (data: CreateCampaignRequest) => {
+    const success = await createCampaign(data);
+    if (success) {
       setIsFormOpen(false);
     }
   };
 
-  const handleDeleteCampaign = (id: string) => {
-    setCampaigns(campaigns.filter((campaign) => campaign.id !== id));
+  const handleEditCampaign = async (data: CreateCampaignRequest) => {
+    if (editingCampaign) {
+      const success = await updateCampaign(editingCampaign.id, data);
+      if (success) {
+        setEditingCampaign(undefined);
+        setIsFormOpen(false);
+      }
+    }
   };
 
-  const handleToggleStatus = (id: string, status: 'ACTIVE' | 'INACTIVE') => {
-    setCampaigns(
-      campaigns.map((campaign) =>
-        campaign.id === id
-          ? { ...campaign, status, updatedAt: new Date().toISOString() }
-          : campaign
-      )
-    );
+  const handleDeleteCampaign = async (id: string) => {
+    await deleteCampaign(id);
+  };
+
+  const handleToggleStatus = async (id: string, status: 'ACTIVE' | 'INACTIVE') => {
+    await toggleCampaignStatus(id, status);
   };
 
   const handleEdit = (campaign: Campaign) => {
@@ -97,14 +69,30 @@ const CampaignDashboard: React.FC = () => {
               Manage your marketing campaigns and track their performance
             </p>
           </div>
-          <button
-            onClick={() => setIsFormOpen(true)}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors card-shadow hover-lift"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            New Campaign
-          </button>
+          <div className="flex space-x-3">
+            <button
+              onClick={fetchCampaigns}
+              disabled={isLoading}
+              className="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 transition-colors"
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              Refresh
+            </button>
+            <button
+              onClick={() => setIsFormOpen(true)}
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors card-shadow hover-lift"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              New Campaign
+            </button>
+          </div>
         </div>
+
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-800">Error: {error}</p>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-sm border">
@@ -136,6 +124,15 @@ const CampaignDashboard: React.FC = () => {
         </div>
       </div>
 
+      {isLoading && (
+        <div className="text-center py-8">
+          <div className="inline-flex items-center">
+            <RefreshCw className="w-5 h-5 animate-spin mr-2" />
+            <span>Loading campaigns...</span>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {campaigns.map((campaign) => (
           <CampaignCard
@@ -148,7 +145,7 @@ const CampaignDashboard: React.FC = () => {
         ))}
       </div>
 
-      {campaigns.length === 0 && (
+      {campaigns.length === 0 && !isLoading && (
         <div className="text-center py-12">
           <div className="text-gray-500 mb-4">
             <Target className="w-12 h-12 mx-auto mb-4" />
