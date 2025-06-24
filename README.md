@@ -22,11 +22,17 @@ cd frontend
 npm install
 ```
 
-2. Start the client
+2. Add env file
+
+````bash
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+3. Start the client
 
 ```bash
 npm run dev
-```
+````
 
 ````
 

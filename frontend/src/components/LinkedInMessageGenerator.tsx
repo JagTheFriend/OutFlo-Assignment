@@ -1,3 +1,4 @@
+import { API_CONFIG } from "@/config/env";
 import { Copy, MessageSquare, Send, Wand2 } from "lucide-react";
 import React, { useState } from "react";
 import { LinkedInProfile } from "../types/campaign";
@@ -11,8 +12,6 @@ const LinkedInMessageGenerator: React.FC = () => {
     summary: "",
   });
 
-  const [campaignType, setCampaignType] = useState("networking");
-  const [tone, setTone] = useState("professional");
   const [generatedMessage, setGeneratedMessage] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -32,22 +31,19 @@ const LinkedInMessageGenerator: React.FC = () => {
       summary: profileData.summary,
     });
 
-    const data = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/personalized-message`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: profileData.name,
-          job_title: profileData.job_title,
-          company: profileData.company,
-          location: profileData.location,
-          summary: profileData.summary,
-        }),
-      }
-    );
+    const data = await fetch(`${API_CONFIG.BASE_URL}/personalized-message`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: profileData.name,
+        job_title: profileData.job_title,
+        company: profileData.company,
+        location: profileData.location,
+        summary: profileData.summary,
+      }),
+    });
     const selectedMessage = (await data.json()).data;
     setGeneratedMessage(selectedMessage);
     setIsGenerating(false);

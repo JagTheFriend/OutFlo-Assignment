@@ -1,8 +1,9 @@
+
 export interface Campaign {
   id: string;
   name: string;
   description: string;
-  status: "ACTIVE" | "INACTIVE";
+  status: 'ACTIVE' | 'INACTIVE';
   leads: string[];
   accountIDs: string[];
   createdAt: string;
@@ -12,7 +13,7 @@ export interface Campaign {
 export interface CreateCampaignRequest {
   name: string;
   description: string;
-  status: "ACTIVE" | "INACTIVE";
+  status: 'ACTIVE' | 'INACTIVE';
   leads: string[];
   accountIDs: string[];
 }
