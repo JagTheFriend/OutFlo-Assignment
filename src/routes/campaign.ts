@@ -42,7 +42,7 @@ campaignRoute.get("/:id", async (c) => {
 const newCampaignSchema = z.object({
   name: z.string(),
   description: z.string(),
-  status: z.nativeEnum(CampaignStatus).default("ACTIVE"),
+  status: z.nativeEnum(CampaignStatus),
   leads: z.array(z.string()),
   accountIDs: z.array(z.string()),
 });
@@ -54,7 +54,6 @@ campaignRoute.post("/", zValidator("json", newCampaignSchema), async (c) => {
   const campaign = await db.campaign.create({
     data: {
       ...parsedData,
-      status: "ACTIVE",
     },
   });
   return c.json(
