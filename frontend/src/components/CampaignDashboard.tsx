@@ -1,10 +1,9 @@
-
-import React, { useState } from 'react';
-import { Campaign, CreateCampaignRequest } from '../types/campaign';
-import CampaignCard from './CampaignCard';
-import CampaignForm from './CampaignForm';
-import { Plus, Target, RefreshCw } from 'lucide-react';
-import { useCampaigns } from '../hooks/useCampaigns';
+import { Plus, RefreshCw, Target } from "lucide-react";
+import React, { useState } from "react";
+import { useCampaigns } from "../hooks/useCampaigns";
+import { Campaign, CreateCampaignRequest } from "../types/campaign";
+import CampaignCard from "./CampaignCard";
+import CampaignForm from "./CampaignForm";
 
 const CampaignDashboard: React.FC = () => {
   const {
@@ -15,11 +14,13 @@ const CampaignDashboard: React.FC = () => {
     createCampaign,
     updateCampaign,
     deleteCampaign,
-    toggleCampaignStatus
+    toggleCampaignStatus,
   } = useCampaigns();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingCampaign, setEditingCampaign] = useState<Campaign | undefined>();
+  const [editingCampaign, setEditingCampaign] = useState<
+    Campaign | undefined
+  >();
 
   const handleCreateCampaign = async (data: CreateCampaignRequest) => {
     const success = await createCampaign(data);
@@ -42,7 +43,10 @@ const CampaignDashboard: React.FC = () => {
     await deleteCampaign(id);
   };
 
-  const handleToggleStatus = async (id: string, status: 'ACTIVE' | 'INACTIVE') => {
+  const handleToggleStatus = async (
+    id: string,
+    status: "ACTIVE" | "INACTIVE"
+  ) => {
     await toggleCampaignStatus(id, status);
   };
 
@@ -56,7 +60,7 @@ const CampaignDashboard: React.FC = () => {
     setEditingCampaign(undefined);
   };
 
-  const activeCampaigns = campaigns.filter((c) => c.status === 'ACTIVE').length;
+  const activeCampaigns = campaigns.filter((c) => c.status === "ACTIVE").length;
   const totalCampaigns = campaigns.length;
 
   return (
@@ -64,7 +68,9 @@ const CampaignDashboard: React.FC = () => {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Campaign Dashboard</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Campaign Dashboard
+            </h1>
             <p className="text-gray-600 mt-2">
               Manage your marketing campaigns and track their performance
             </p>
@@ -75,7 +81,9 @@ const CampaignDashboard: React.FC = () => {
               disabled={isLoading}
               className="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 transition-colors"
             >
-              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw
+                className={`w-4 h-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+              />
               Refresh
             </button>
             <button
@@ -98,25 +106,38 @@ const CampaignDashboard: React.FC = () => {
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600">Total Campaigns</p>
-                <p className="text-2xl font-bold text-gray-900">{totalCampaigns}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Total Campaigns
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {totalCampaigns}
+                </p>
               </div>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600">Active Campaigns</p>
-                <p className="text-2xl font-bold text-green-600">{activeCampaigns}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Active Campaigns
+                </p>
+                <p className="text-2xl font-bold text-green-600">
+                  {activeCampaigns}
+                </p>
               </div>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600">Success Rate</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Success Rate
+                </p>
                 <p className="text-2xl font-bold text-blue-600">
-                  {totalCampaigns > 0 ? Math.round((activeCampaigns / totalCampaigns) * 100) : 0}%
+                  {totalCampaigns > 0
+                    ? Math.round((activeCampaigns / totalCampaigns) * 100)
+                    : 0}
+                  %
                 </p>
               </div>
             </div>

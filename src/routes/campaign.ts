@@ -42,6 +42,9 @@ campaignRoute.get("/:id", async (c) => {
 const newCampaignSchema = z.object({
   name: z.string(),
   description: z.string(),
+  status: z.nativeEnum(CampaignStatus).default("ACTIVE"),
+  leads: z.array(z.string()),
+  accountIDs: z.array(z.string()),
 });
 
 // POST /campaigns Create a new campaign
@@ -66,6 +69,8 @@ const updateCampaignSchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
   status: z.nativeEnum(CampaignStatus).optional(),
+  leads: z.array(z.string()).optional(),
+  accountIDs: z.array(z.string()).optional(),
 });
 
 // PUT /campaigns/:id Update campaign details (including status)
